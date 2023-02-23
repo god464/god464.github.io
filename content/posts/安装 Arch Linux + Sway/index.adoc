@@ -9,7 +9,10 @@ categories:
 title: "安装 Arch Linux + Sway"
 date: 2023-02-11T20:26:10+08:00
 draft: false
+showTOC: true
 ---
+
+:source-highlighter: pygments
 
 == 环境
 惠普笔记本，CPU 为 AMD 5700U，无独显。系统装在希捷的移动硬盘（非固态）上。
