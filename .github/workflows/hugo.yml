@@ -24,7 +24,6 @@ concurrency:
 defaults:
   run:
     shell: bash
-
 jobs:
   # Build job
   build:
@@ -33,7 +32,7 @@ jobs:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
       - name: init dev env
-        run: sudo apt install build-essential
+        run: sudo apt install bison flex libffi-dev libxml2-dev libgdk-pixbuf2.0-dev libcairo2-dev libpango1.0-dev fonts-lyx cmake
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
