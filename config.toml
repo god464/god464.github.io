@@ -25,3 +25,5 @@ pygmentsCodeFences=true
       style = 'gruvbox'
 [params]
   enableGoogleAnalytics= true
+[security]
+enableInlineShortcodes = true
