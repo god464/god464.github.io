@@ -9,7 +9,6 @@ categories:
 title: "安装 Arch Linux + Sway"
 date: 2023-02-11T20:26:10+08:00
 draft: false
-showTOC: true
 ---
 
 == 环境
@@ -19,6 +18,7 @@ showTOC: true
 1. 从 https://archlinux.org/download/ 下载 ISO 镜像。
 2. 准备一个已经格式化的 U 盘。
 3. 下载 https://github.com/ventoy/Ventoy[Ventoy]。
+
 == 制作启动盘
 在确保已插入 u 盘的情况下打开 Ventoy。
 将分区类型设置为 GPT，并根据下图设置其他选项：
