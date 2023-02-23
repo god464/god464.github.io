@@ -32,6 +32,8 @@ jobs:
     concurrency:
       group: ${{ github.workflow }}-${{ github.ref }}
     steps:
+      - name: init dev env
+        run: sudo apt install build-essential
       - name: Setup Hugo
         uses: peaceiris/actions-hugo@v2
         with:
