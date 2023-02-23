@@ -1,0 +1,27 @@
+baseURL = 'god464.github.io'
+languageCode = 'zh'
+defaultContentLanguage = "zh"
+defaultContentLanguageInSubdir = true
+title = '我的个人博客'
+theme="mini"
+hasCJKLanguage=true
+[taxonomies]
+  category='categories'
+  tag='tags'
+enableGitInfo = true
+pygmentsUseClasses=true
+pygmentsCodeFences=true
+[markup]
+  [markup.asciidocExt]
+    backend = 'html5'
+    extensions = ["asciidoctor-diagram","pygments.rb", "asciidoctor-mathematical"]
+    safeMode = 'unsafe'
+    sectionNumbers = true
+    [markup.asciidocExt.attributes]
+  [markup.highlight]
+      anchorLineNos = true
+      guessSyntax = true
+      linenos = true
+      style = 'gruvbox'
+[params]
+  enableGoogleAnalytics= true

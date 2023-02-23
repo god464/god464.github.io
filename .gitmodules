@@ -1,0 +1,4 @@
+
+[submodule "themes/mini"]
+	path = themes/mini
+	url = git@github.com:nodejh/hugo-theme-mini.git
