@@ -27,4 +27,4 @@ pygmentsCodeFences=true
   enableGoogleAnalytics= true
 [security]
   [security.exec]
-allow = ["^dart-sass-embedded$", "^go$", "^npx$", "^postcss$", "^asciidoctor$"]
+    allow = ["^dart-sass-embedded$", "^go$", "^npx$", "^postcss$", "^asciidoctor$"]
