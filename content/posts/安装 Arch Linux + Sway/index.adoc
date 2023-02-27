@@ -1,3 +1,5 @@
+:source-highlighter: highlightjs
+
 ﻿---
 tags:
 - Unix
@@ -11,8 +13,6 @@ date: 2023-02-11T20:26:10+08:00
 draft: false
 showTOC: true
 ---
-
-:source-highlighter: pygments
 
 == 环境
 惠普笔记本，CPU 为 AMD 5700U，无独显。系统装在希捷的移动硬盘（非固态）上。
@@ -50,7 +50,7 @@ image::ventoy.png[]
 === 联网
 输入 ~iwctl~ ，进入 =iwd= 的交互式提示符。然后输入以下命令：
 
-[,bash]
+[,bash,linenums]
 ----
 device list # 列出网卡名称，一般为 wlan0.
 station <device> scan # 扫描当前环境下的网络
@@ -60,13 +60,13 @@ exit
 ----
 
 测试链接
-[,bash]
+[,bash,linenums]
 ----
 ping baidu.com
 ----
 
 更新系统时间
-[,bash]
+[,bash,linenums]
 ----
 timedatectl set-ntp true
 ----
@@ -75,39 +75,40 @@ timedatectl set-ntp true
 所以初次安装推荐使用 ssh 进行后续步骤。
 
 为当前环境设置密码
-[,bash]
+[,bash,linenums]
 ----
 passwd
 ----
 然后输入 ~ip a~ 查看 ip 地址。
 
 在另一台主机上输入以下代码即可：
-[,bash]
+[,bash,linenums]
 ----
 ssh root@<ip>
 ----
 === 设置安装源
 ==== 禁用 reflector
-[,bash]
+[,bash,linenums]
 ----
 systemctl stop reflector
 systemctl disable reflector
 ----
 ==== 修改安装源
-[,bash]
+[,bash,linenums]
 ----
 nano /etc/pacman.d/mirrorlist
 ----
 建议只保留 tuna、nju、ustc 几个源。
+
 === 系统分区
 首先查看目前硬盘的状态：
-[,bash]
+[,bash,linenums]
 ----
 lsblk
 ----
 由于我计划使用的是移动硬盘安装，在 ~lsblk~ 中被识别为 sdb。
 所以输入
-[,bash]
+[,bash,linenums]
 ----
 cfdisk /dev/sdb
 ----
@@ -124,7 +125,7 @@ image::gpt.png[]
 
 选择 GPT ，然后按照下列表格划分区域：
 
-[cols="1,1,1"]
+[cols="^,^,^"]
 |===
 |Device|Size|Size Type
 
@@ -138,11 +139,12 @@ image::gpt.png[]
 记得划分好后选择 Write 保存。
 
 然后输入
-[,bash]
+[,bash,linenums]
 ----
 lsblk
 ----
 检查是否有效。
+
 === 格式化分区并挂载
 [.bash]
 ----
@@ -158,34 +160,34 @@ mount /dev/sda1 /mnt/boot/efi
 swapon /dev/sda2
 ----
 检查
-[,bash]
+[,bash,linenums]
 ----
 lsblk -f
 ----
 === 安装最基本的系统
-[,bash]
+[,bash,linenums]
 ----
 pacstrap /mnt linux linux-firmware linux-headers base base-devel vi git bash-completion nano
 ----
 === 生成文件系统表
-[,bash]
+[,bash,linenums]
 ----
 genfstab -U /mnt >> /mnt/etc/fstab
 ----
 === 进入新系统
-[,bash]
+[,bash,linenums]
 ----
 arch-chroot /mnt
 ----
 === 设置时区
-[,bash]
+[,bash,linenums]
 ----
 ln -sf /usr/share/zoneinfo/Asia/Shanghai /etc/localtime
 hwclock --systohc
 ----
 === 本地化设置
 设置系统语言
-[,bash]
+[,bash,linenums]
 ----
 nano /etc/locale.gen
 # 取消注释下面两行
@@ -193,23 +195,23 @@ en_US.UTF-8 UTF-8
 zh_CN.UTF-8 UTF-8
 ----
 生成本地语言信息
-[,bash]
+[,bash,linenums]
 ----
 locale-gen
 ----
 设置语言环境变量
-[,bash]
+[,bash,linenums]
 ----
 echo "LANG=en_US.UTF-8" > /etc/locale.conf
 ----
 === 网络设置
 设置主机名
-[,bash]
+[,bash,linenums]
 ----
 echo arch > /etc/hostname
 ----
 生成 hosts 文件
-[,bash]
+[,bash,linenums]
 ----
 nano /etc/hosts
 # 在文件末尾添加
@@ -219,36 +221,35 @@ nano /etc/hosts
 ----
 === 配置 Grub
 ==== 安装相关软件包
-[,bash]
+[,bash,linenums]
 ----
 pacman -S grub efibootmgr efivar networkmanager amd-ucode openssh
 ----
 
-若 CPU 为 Intel，则将 amd-ucode 替换为 intel-ucode。
 ==== 生成 grub 配置文件
-[,bash]
+[,bash,linenums]
 ----
 grub-install /dev/sda
 grub-mkconfig -o /boot/grub/grub.cfg
 ----
 ==== 配置 NetWork
-[,bash]
+[,bash,linenums]
 ----
 systemctl enable NetworkManager
 ----
 ==== 重新配置 root 密码
-[,bash]
+[,bash,linenums]
 ----
 passwd
 ----
 ==== 启动 sshd 服务
-[,bash]
+[,bash,linenums]
 ----
 systemctl enable sshd
 ----
 ==== 创建账户
 由于安全原因，不推荐直接修改 ssh 配置允许重启系统后可以直接使用 root 账户登录。所以在此处创建账户 cl。
-[,bash]
+[,bash,linenums]
 ----
 useradd --create-home cl # 创建
 passwd cl # 设置密码
@@ -264,7 +265,7 @@ vi 中，h j k l 分别对应了方向键的 ← ↓ ↑ →。
 若需保存退出则在一般模式下输入 :wq。
 
 ==== 重启系统
-[,bash]
+[,bash,linenums]
 ----
 exit
 umount /mnt/boot/efi
@@ -273,17 +274,19 @@ reboot
 ----
 
 这时候可以拔出启动盘了，等待重启完成。
+
 == 安装图形界面（非必须）
 理论上重启后已经是一个完整的 linux 系统。
 但由于我此次安装的目的是为了日常使用，需要图形界面。
 所以还要继续以下步骤：
+
 === 重新使用 ssh 连接
-[,bash]
+[,bash,linenums]
 ----
 ssh cl@<ip>
 ----
 === 添加 Archlinuxcn 软件源
-[,bash]
+[,bash,linenums]
 ----
 sudo nano /etc/pacman.conf
 # 在最后输入
@@ -291,41 +294,45 @@ sudo nano /etc/pacman.conf
 Server = https://mirrors.tuna.tsinghua.edu.cn/archlinuxcn/$arch
 ----
 然后输入：
-[,bash]
+[,bash,linenums]
 ----
 sudo pacman -Syy
 sudo pacman -S archlinuxcn-keyring
 ----
 === 安装显卡驱动
-[,bash]
+[,bash,linenums]
 ----
 sudo pacman -S xf86-video-amdgpu vulkan-radeon mesa
 ----
 其他显卡可以参考 https://wiki.archlinux.org/title/Xorg#Driver_installation[Xorg] 以及 https://wiki.archlinux.org/title/Vulkan#Installation[Vulkan]。
+
 === 配置声卡
-[,bash]
+[,bash,linenums]
 ----
 sudo pacman -S alsa-utils pipewire pipewire-audio pipewire-alsa wireplumber
 ----
 === 安装显示服务
-[,bash]
+[,bash,linenums]
 ----
 sudo pacman -S wayland xorg-xwayland
 ----
 若你是 NVIDIA 用户，请考虑禁用显卡改用 intel 核显或根据官方 wiki https://wiki.archlinux.org/title/NVIDIA[NVIDIA] 进行配置。
+
 === 安装字体
+
 ==== 英文字体
-[,bash]
+[,bash,linenums]
 ----
 sudo pacman -S ttf-dejavu ttf-droid ttf-hack ttf-font-awesome otf-font-awesome ttf-lato ttf-liberation ttf-linux-libertine ttf-opensans ttf-roboto ttf-ubuntu-font-family
 ----
+
 ==== 中文字体
-[,bash]
+[,bash,linenums]
 ----
 sudo pacman -S ttf-hannom noto-fonts noto-fonts-extra noto-fonts-emoji noto-fonts-cjk adobe-source-code-pro-fonts adobe-source-sans-fonts adobe-source-serif-fonts adobe-source-han-sans-cn-fonts adobe-source-han-sans-hk-fonts adobe-source-han-sans-tw-fonts adobe-source-han-serif-cn-fonts wqy-zenhei wqy-microhei
 ----
 ==== 打开字体引擎
-[,bash]
+[,bash,linenums]
 ----
 sudo vim /etc/profile.d/freetype2.sh
 # 取消注释最后一句
@@ -333,7 +340,7 @@ export FREETYPE_PROPERTIES="truetype:interpreter-version=40"
 ----
 === 安装桌面环境
 我这里采用的是平铺式桌面 https://swaywm.org/[Sway]。
-[,bash]
+[,bash,linenums]
 ----
 sudo pacman -S sway wofi kitty swaylock swaybg swayidle greetd greetd-tuigreet-git clipman ark paru
 sudo nano /etc/greetd/config.toml
